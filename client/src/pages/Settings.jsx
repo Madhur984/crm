@@ -38,7 +38,7 @@ export default function SettingsPage({ notify }) {
   return (
     <>
       <PageHeader eyebrow="Your account" title="Account Settings" />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "start" }}>
+      <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "start" }}>
         <Card title="Profile">
           <Field label="Full name"><input value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} style={inputStyle} /></Field>
           <Field label="Phone"><input value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="Optional" style={inputStyle} /></Field>

@@ -58,7 +58,7 @@ export default function SupportPage({ proj, notify }) {
   return (
     <>
       <PageHeader eyebrow={proj.code} title="Support" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div className="rc-cols-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 20 }}>
         {proj.reconTeam.map((m) => (
           <Card key={m.role}>
             <div style={{ width: 36, height: 36, borderRadius: 5, background: T.ink, border: `1.5px solid ${T.edge}`, boxShadow: SH.sm, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, marginBottom: 12 }}>
@@ -106,7 +106,7 @@ export default function SupportPage({ proj, notify }) {
       )}
 
       <Card title="Knowledge Base">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+        <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
           {["Understanding your Procurement Confidence score", "How customs clearance works", "Reading your compliance package",
             "What happens during First Article Inspection", "How payment milestones are structured", "Requesting a BOM change"].map((f) => (
             <div key={f} onClick={() => notify("Opening article...")} className="rc-btn" style={{
@@ -154,7 +154,7 @@ export default function SupportPage({ proj, notify }) {
       )}
 
       {chatOpen && (
-        <div style={{ position: "fixed", bottom: 20, right: 20, width: 322, background: "#fff", border: `1.5px solid ${T.edge}`, borderRadius: 5, boxShadow: SH.lg, zIndex: 150, display: "flex", flexDirection: "column", maxHeight: 420 }}>
+        <div style={{ position: "fixed", bottom: 16, right: 16, width: "min(322px, calc(100vw - 32px))", background: "#fff", border: `1.5px solid ${T.edge}`, borderRadius: 5, boxShadow: SH.lg, zIndex: 150, display: "flex", flexDirection: "column", maxHeight: "min(420px, 70vh)" }}>
           <div style={{ padding: "12px 14px", borderBottom: `1.5px solid ${T.edge}`, background: T.ink, color: "#fff", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span style={{ fontSize: 13, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.4 }}>Recon Support</span>
             <X size={16} color="#fff" style={{ cursor: "pointer" }} onClick={() => setChatOpen(false)} />

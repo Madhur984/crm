@@ -18,7 +18,7 @@ export default function AtlasPage({ proj }) {
       <PageHeader eyebrow={`${proj.code} · Sourcing status`} title="Recon Atlas" />
 
       <Card style={{ marginBottom: 20 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
           <Ring pct={proj.confidence} size={92} color={T.accent} label="READINESS" />
           <div>
             <div style={{ fontSize: 11, letterSpacing: 0.8, textTransform: "uppercase", color: T.faint, fontWeight: 700 }}>Procurement Readiness</div>
@@ -32,7 +32,7 @@ export default function AtlasPage({ proj }) {
         </div>
       </Card>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div className="rc-cols-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
         {cards.map((c) => (
           <Card key={c.t} title={c.t} action={<Pill status={c.s} />}>
             <p style={{ margin: 0, fontSize: 12.5, color: T.graphite, lineHeight: 1.5 }}>{c.d}</p>

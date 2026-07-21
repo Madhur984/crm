@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ fontFamily: SANS, minHeight: "100vh", background: T.mist, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-      <div style={{ width: 400, background: T.panel, border: BORDER, borderRadius: 8, padding: 32, boxShadow: SH.lg }}>
+      <div style={{ width: "min(400px, 100%)", background: T.panel, border: BORDER, borderRadius: 8, padding: "clamp(22px, 6vw, 32px)", boxShadow: SH.lg }}>
         <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 26 }}>
           <div style={{ width: 34, height: 34, borderRadius: 5, background: T.accent, border: `1.5px solid ${T.edge}`, boxShadow: SH.sm, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ width: 13, height: 13, background: "#fff", transform: "rotate(45deg)" }} />

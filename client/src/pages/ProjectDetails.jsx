@@ -23,7 +23,7 @@ export default function ProjectDetailsPage({ proj, notify }) {
         <Pill status={proj.status} /><Pill status={proj.risk} />
         <span style={{ fontSize: 13, color: T.faint, fontFamily: MONO }}>Value: {proj.value}</span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 20 }}>
+      <div className="rc-cols-side" style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 20 }}>
         <div>
           <div style={{ display: "flex", gap: 6, borderBottom: `2px solid ${T.edge}`, marginBottom: 18, flexWrap: "wrap" }}>
             {tabs.map((t) => (
@@ -37,7 +37,7 @@ export default function ProjectDetailsPage({ proj, notify }) {
           {tab === "Overview" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
               <Card title="Project Information">
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 24px" }}>
+                <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 24px" }}>
                   {[["Industry", proj.industry], ["Application", proj.application], ["Component Categories", proj.categories.join(", ")],
                     ["Quantity", proj.quantity], ["Project Value", proj.value], ["Delivery Location", proj.location],
                     ["Kickoff", proj.kickoff], ["Target Delivery", proj.targetDelivery]].map(([k, v]) => (

@@ -36,7 +36,7 @@ export default function CompliancePage({ proj, notify }) {
       </Card>
 
       <Card title="Certifications" style={{ marginBottom: 20 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+        <div className="rc-cols-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
           {proj.certifications.map((c) => (
             <div key={c.name} style={{ border: `1.5px solid ${T.edge}`, borderRadius: 5, padding: 12, boxShadow: SH.sm, background: T.panel }}>
               <div style={{ fontSize: 13, fontWeight: 800 }}>{c.name}</div>
@@ -52,7 +52,7 @@ export default function CompliancePage({ proj, notify }) {
           renderCell={(r, c) => c === "status" ? <Pill status={r[c]} /> : r[c]} />
       </Card>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
         <Card title="Customs — Import / Export">
           <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
             <span style={{ fontSize: 13 }}>Import Review</span><Pill status={proj.customs.importReview} />

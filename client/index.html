@@ -40,6 +40,41 @@
     /* Emerald focus with a soft offset shadow */
     input:focus, select:focus, textarea:focus { border-color: #16A34A !important; box-shadow: 2px 2px 0 rgba(22,163,74,.7); }
     .rc-search:focus-within { border-color: #16A34A !important; box-shadow: 2px 2px 0 rgba(22,163,74,.7); }
+
+    /* ── Responsive ─────────────────────────────────────────────────────── */
+    body { overflow-x: hidden; }
+    .rc-topsearch { width: clamp(130px, 24vw, 244px) !important; }
+    .rc-hamburger { display: none; }
+    .rc-overlay { position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 150; }
+
+    /* Two-column content + wide KPI rows collapse first (tablet) */
+    @media (max-width: 1024px) {
+      .rc-cols-main, .rc-cols-side { grid-template-columns: minmax(0,1fr) !important; }
+      .rc-cols-5 { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+      .rc-cols-4 { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+      .rc-cols-3 { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    }
+
+    /* Off-canvas drawer sidebar below 900px */
+    @media (max-width: 900px) {
+      .rc-sidebar {
+        position: fixed !important; top: 0; left: 0; height: 100vh !important;
+        transform: translateX(-100%); transition: transform .25s ease; z-index: 200;
+      }
+      .rc-sidebar.rc-open { transform: translateX(0); box-shadow: 4px 0 0 rgba(17,24,39,.25); }
+      .rc-hamburger { display: inline-flex !important; }
+    }
+    @media (min-width: 901px) { .rc-overlay { display: none !important; } }
+
+    /* Phones: single column + tighter chrome */
+    @media (max-width: 680px) {
+      .rc-cols-2, .rc-cols-3, .rc-cols-4, .rc-cols-5 { grid-template-columns: minmax(0,1fr) !important; }
+      .rc-content { padding: 16px 14px 48px !important; }
+      .rc-header { padding: 0 12px !important; height: 58px !important; }
+    }
+    @media (max-width: 440px) {
+      .rc-topsearch { display: none !important; }
+    }
   </style>
 </head>
 <body>

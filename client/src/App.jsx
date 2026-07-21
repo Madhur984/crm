@@ -7,7 +7,7 @@ import { Toast, Spinner, Pill } from "./components/ui.jsx";
 import {
   LayoutDashboard, FolderKanban, FileText, Radar, ShieldCheck, Receipt, Truck,
   Files, MessageSquare, LifeBuoy, Search, Bell, ChevronDown, Building2, LogOut,
-  Settings, CheckCircle2, FolderKanban as ProjIcon,
+  Settings, CheckCircle2, Menu, FolderKanban as ProjIcon,
 } from "./icons.jsx";
 
 import LoginPage from "./pages/Login.jsx";
@@ -150,15 +150,17 @@ function AppShell() {
   }, [q]);
   const goSearch = (path) => { setQ(""); setResults(null); navigate(path); };
 
-  const go = (pageId) => navigate(`/app/${projectId}/${pageId}`);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const go = (pageId) => { navigate(`/app/${projectId}/${pageId}`); setSidebarOpen(false); };
   const PageComp = PAGES[page] || DashboardPage;
 
   const initials = (name) => name ? name.split(" ").map((n) => n[0]).join("").slice(0, 2) : "CU";
 
   return (
     <div style={{ fontFamily: SANS, background: T.mist, minHeight: "100vh", color: T.ink, display: "flex", fontSize: 14 }}>
+      {sidebarOpen && <div className="rc-overlay" onClick={() => setSidebarOpen(false)} />}
       {/* Sidebar */}
-      <div style={{ width: 238, flexShrink: 0, background: T.panel, borderRight: `1.5px solid ${T.edge}`, display: "flex", flexDirection: "column", position: "sticky", top: 0, height: "100vh" }}>
+      <div className={`rc-sidebar${sidebarOpen ? " rc-open" : ""}`} style={{ width: 238, flexShrink: 0, background: T.panel, borderRight: `1.5px solid ${T.edge}`, display: "flex", flexDirection: "column", position: "sticky", top: 0, height: "100vh" }}>
         <div style={{ padding: "18px 18px 16px", display: "flex", alignItems: "center", gap: 11, borderBottom: `1.5px solid ${T.edge}` }}>
           <div style={{ width: 32, height: 32, borderRadius: 5, background: T.accent, border: `1.5px solid ${T.edge}`, boxShadow: SH.sm, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ width: 11, height: 11, background: "#fff", transform: "rotate(45deg)" }} />
@@ -204,19 +206,23 @@ function AppShell() {
 
       {/* Main */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
+        <div className="rc-header" style={{
           height: 62, borderBottom: `1.5px solid ${T.edge}`, background: T.panel, display: "flex",
           alignItems: "center", justifyContent: "space-between", padding: "0 24px", position: "sticky", top: 0, zIndex: 50,
         }}>
-          <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+          <div className="rc-hamburger rc-btn rc-btn-ghost" onClick={() => setSidebarOpen(true)} style={{ cursor: "pointer", padding: 6, borderRadius: 5, color: T.ink, alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Menu size={20} />
+          </div>
+          <div style={{ position: "relative", minWidth: 0 }}>
             <div onClick={() => setSwitcherOpen((o) => !o)} className="rc-btn rc-btn-secondary" style={{
               display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "7px 12px",
-              border: BORDER, borderRadius: 5, background: T.panel,
+              border: BORDER, borderRadius: 5, background: T.panel, minWidth: 0,
             }}>
-              <Building2 size={14} color={T.accentDeep} />
-              <span style={{ fontSize: 13, fontWeight: 800 }}>{proj ? proj.name : "…"}</span>
-              <span style={{ fontSize: 11, color: T.faint, fontFamily: MONO }}>{proj ? proj.code : ""}</span>
-              <ChevronDown size={13} color={T.ink} />
+              <Building2 size={14} color={T.accentDeep} style={{ flexShrink: 0 }} />
+              <span style={{ fontSize: 13, fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "42vw" }}>{proj ? proj.name : "…"}</span>
+              <span style={{ fontSize: 11, color: T.faint, fontFamily: MONO, flexShrink: 0 }}>{proj ? proj.code : ""}</span>
+              <ChevronDown size={13} color={T.ink} style={{ flexShrink: 0 }} />
             </div>
             {switcherOpen && (
               <>
@@ -238,11 +244,12 @@ function AppShell() {
               </>
             )}
           </div>
+          </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             {/* Global search */}
             <div style={{ position: "relative" }}>
-              <div className="rc-search" style={{ display: "flex", alignItems: "center", gap: 7, background: T.panel, border: BORDER, borderRadius: 5, padding: "7px 11px", width: 244 }}>
+              <div className="rc-search rc-topsearch" style={{ display: "flex", alignItems: "center", gap: 7, background: T.panel, border: BORDER, borderRadius: 5, padding: "7px 11px" }}>
                 <Search size={14} color={T.ink} />
                 <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search projects, docs, parts…" style={{ border: "none", background: "transparent", outline: "none", fontSize: 12.5, width: "100%", fontWeight: 500 }} />
               </div>
@@ -309,7 +316,7 @@ function AppShell() {
           </div>
         </div>
 
-        <div style={{ padding: "26px 32px 60px", maxWidth: 1280 }}>
+        <div className="rc-content" style={{ padding: "26px 32px 60px", maxWidth: 1280 }}>
           {loadErr ? (
             <div style={{ color: T.amber, fontSize: 14 }}>Could not load project: {loadErr}</div>
           ) : !proj ? (

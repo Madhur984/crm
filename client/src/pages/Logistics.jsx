@@ -32,7 +32,7 @@ export default function LogisticsPage({ proj, notify }) {
         </div>
         <LifecycleRail items={railItems} currentIndex={currentIndex} />
       </Card>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+      <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
         <Card title="Manufacturing Status">
           {L.manufacturing.map((m) => (
             <div key={m.step} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", fontSize: 13 }}>
@@ -52,7 +52,7 @@ export default function LogisticsPage({ proj, notify }) {
           ))}
         </Card>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
         <Card title="Insurance">
           <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: 13 }}>
             <span style={{ color: T.faint }}>Status</span><Pill status={L.insurance.status} />

@@ -80,7 +80,7 @@ export default function TechnicalPage({ proj, notify, reload }) {
 
       {tab === "Specifications" && (
         <Card title="Submitted Specifications">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 24px" }}>
+          <div className="rc-cols-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 24px" }}>
             {[["Operating Environment", "-40°C to 85°C, IP54"], ["Certification Targets", "RoHS, REACH, CE, UL"],
               ["Electrical Tolerance", "±2% on passive values"], ["Packaging", "Tape & reel, ESD-safe"]].map(([k, v]) => (
               <div key={k}>

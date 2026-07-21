@@ -89,7 +89,7 @@ export function Card({ title, action, children, style, hover }) {
       padding: 20, boxShadow: SH.sm, ...style,
     }}>
       {(title || action) && (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, gap: 10, flexWrap: "wrap" }}>
           {title && <h3 style={{ margin: 0, fontSize: 12, fontWeight: 800, color: T.ink, letterSpacing: 0.6, textTransform: "uppercase" }}>{title}</h3>}
           {action}
         </div>
@@ -180,8 +180,8 @@ export function LifecycleRail({ items, currentIndex, onJump, compact }) {
   const n = items.length;
   const progress = Math.max(0, currentIndex) / Math.max(1, n - 1);
   return (
-    <div style={{ position: "relative", padding: compact ? "6px 4px" : "10px 4px 4px" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", position: "relative" }}>
+    <div style={{ position: "relative", padding: compact ? "6px 4px" : "10px 4px 4px", overflowX: "auto" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", position: "relative", minWidth: n * (compact ? 34 : 82) }}>
         <div style={{ position: "absolute", top: compact ? 8 : 10, left: 0, right: 0, height: 4, background: T.lineSoft, border: `1px solid ${T.edge}`, zIndex: 0 }} />
         <div style={{
           position: "absolute", top: compact ? 8 : 10, left: 0, height: 4, border: `1px solid ${T.edge}`,

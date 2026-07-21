@@ -40,7 +40,7 @@ export default function DashboardPage({ proj, allProjects, go, notify, reload })
       <PageHeader eyebrow={`${proj.code} · ${proj.name}`} title="Dashboard"
         action={<Btn variant="secondary" icon={Download} onClick={exportSummary}>Export summary</Btn>} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div className="rc-cols-5" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 14, marginBottom: 20 }}>
         <div className="rc-card rc-card-hover" style={{ background: T.panel, border: BORDER, borderRadius: 5, padding: 16, boxShadow: SH.sm, minHeight: 104, display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: T.ink, letterSpacing: 0.5, textTransform: "uppercase" }}>Project Health</div>
@@ -71,7 +71,7 @@ export default function DashboardPage({ proj, allProjects, go, notify, reload })
         <LifecycleRail items={railItems} currentIndex={proj.currentStageIndex} onJump={() => go("project")} />
       </Card>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 20 }}>
+      <div className="rc-cols-main" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 20 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <Card title="Recent Updates" action={<a onClick={() => go("communication")} className="rc-link" style={{ fontSize: 12, color: T.accent, cursor: "pointer", fontWeight: 700 }}>View all →</a>}>
             {proj.activity.slice(0, 4).map((a) => {

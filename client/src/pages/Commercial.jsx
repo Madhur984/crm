@@ -26,7 +26,7 @@ export default function CommercialPage({ proj, notify, reload }) {
   return (
     <>
       <PageHeader eyebrow={proj.code} title="Commercial Centre" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div className="rc-cols-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 20 }}>
         <StatTile icon={Receipt} hue="indigo" label="Total Contract Value" value={fmt(c.total)} />
         <StatTile icon={FileText} hue="violet" label="Amount Invoiced" value={fmt(c.invoiced)} />
         <StatTile icon={CheckCircle2} hue="emerald" label="Amount Paid" value={fmt(c.paid)} accentValue />
