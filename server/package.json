@@ -10,6 +10,7 @@
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:seed": "node --env-file=.env prisma/seed.js",
+    "db:seed:firebase": "node --env-file=.env prisma/seed-firebase.js",
     "db:reset": "prisma db push --force-reset && node --env-file=.env prisma/seed.js",
     "setup": "prisma generate && prisma db push --force-reset && node --env-file=.env prisma/seed.js"
   },
@@ -21,6 +22,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "firebase-admin": "^14.2.0",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
