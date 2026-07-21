@@ -3,3 +3,8 @@ node_modules/
 *.db-journal
 .env
 dist/
+
+# Firebase service-account credentials — NEVER commit these
+serviceAccountKey.json
+firebase-service-account.json
+*-firebase-adminsdk-*.json

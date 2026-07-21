@@ -1,13 +1,27 @@
-import { T, MONO } from "../theme.js";
+import { T, MONO, SH } from "../theme.js";
 import { Card, Pill, Btn, Table, PageHeader } from "../components/ui.jsx";
+import { downloadText } from "../download.js";
 import { Download } from "../icons.jsx";
 
 export default function CompliancePage({ proj, notify }) {
   const allDone = proj.certifications.every((c) => c.status === "Completed" || c.status === "Not Applicable");
+  const downloadPackage = () => {
+    const lines = [
+      `COMPLIANCE PACKAGE — ${proj.code} · ${proj.name}`, "",
+      "CERTIFICATIONS",
+      ...proj.certifications.map((c) => `  ${c.name.padEnd(10)} ${c.status}${c.certNo !== "—" ? "  (" + c.certNo + ")" : ""}`), "",
+      "DOCUMENTATION",
+      ...proj.complianceDocs.map((d) => `  ${d.name.padEnd(24)} ${d.status} ${d.version !== "—" ? d.version : ""}`), "",
+      `Customs — Import: ${proj.customs.importReview} | Export: ${proj.customs.exportReview}`, "",
+      `Generated ${new Date().toLocaleString()}`,
+    ];
+    downloadText(`${proj.code}-compliance-package.txt`, lines.join("\n"));
+    notify("Compliance package downloaded");
+  };
   return (
     <>
       <PageHeader eyebrow={proj.code} title="Compliance Centre"
-        action={<Btn icon={Download} onClick={() => notify("Compliance package (ZIP) downloading...")}>Download compliance package</Btn>} />
+        action={<Btn icon={Download} onClick={downloadPackage}>Download compliance package</Btn>} />
       <Card style={{ marginBottom: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <div>
@@ -24,8 +38,8 @@ export default function CompliancePage({ proj, notify }) {
       <Card title="Certifications" style={{ marginBottom: 20 }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
           {proj.certifications.map((c) => (
-            <div key={c.name} style={{ border: `1px solid ${T.line}`, borderRadius: 8, padding: 12 }}>
-              <div style={{ fontSize: 13, fontWeight: 700 }}>{c.name}</div>
+            <div key={c.name} style={{ border: `1.5px solid ${T.edge}`, borderRadius: 5, padding: 12, boxShadow: SH.sm, background: T.panel }}>
+              <div style={{ fontSize: 13, fontWeight: 800 }}>{c.name}</div>
               <div style={{ marginTop: 6 }}><Pill status={c.status} /></div>
               <div style={{ fontSize: 10.5, color: T.faint, marginTop: 8, fontFamily: MONO }}>{c.certNo !== "—" ? c.certNo : "Not yet issued"}</div>
             </div>

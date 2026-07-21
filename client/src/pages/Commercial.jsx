@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { api } from "../api.js";
 import { T, MONO } from "../theme.js";
-import { Card, Pill, Btn, Table, PageHeader } from "../components/ui.jsx";
-import { Download } from "../icons.jsx";
+import { Card, Pill, Btn, Table, PageHeader, StatTile } from "../components/ui.jsx";
+import { downloadText } from "../download.js";
+import { Download, Receipt, FileText, CheckCircle2, AlertTriangle } from "../icons.jsx";
 
 export default function CommercialPage({ proj, notify, reload }) {
   const [tab, setTab] = useState("Quotation");
@@ -26,17 +27,17 @@ export default function CommercialPage({ proj, notify, reload }) {
     <>
       <PageHeader eyebrow={proj.code} title="Commercial Centre" />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 20 }}>
-        <Card title="Total Contract Value"><div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700 }}>{fmt(c.total)}</div></Card>
-        <Card title="Amount Invoiced"><div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700 }}>{fmt(c.invoiced)}</div></Card>
-        <Card title="Amount Paid"><div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700, color: T.green }}>{fmt(c.paid)}</div></Card>
-        <Card title="Outstanding Balance"><div style={{ fontFamily: MONO, fontSize: 20, fontWeight: 700 }}>{fmt(c.total - c.paid)}</div></Card>
+        <StatTile icon={Receipt} hue="indigo" label="Total Contract Value" value={fmt(c.total)} />
+        <StatTile icon={FileText} hue="violet" label="Amount Invoiced" value={fmt(c.invoiced)} />
+        <StatTile icon={CheckCircle2} hue="emerald" label="Amount Paid" value={fmt(c.paid)} accentValue />
+        <StatTile icon={AlertTriangle} hue={c.total - c.paid > 0 ? "amber" : "teal"} label="Outstanding Balance" value={fmt(c.total - c.paid)} />
       </div>
 
-      <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${T.line}`, marginBottom: 18 }}>
+      <div style={{ display: "flex", gap: 6, borderBottom: `2px solid ${T.edge}`, marginBottom: 18, flexWrap: "wrap" }}>
         {tabs.map((t) => (
           <div key={t} onClick={() => setTab(t)} style={{
-            padding: "8px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-            color: tab === t ? T.ink : T.faint, borderBottom: tab === t ? `2px solid ${T.ink}` : "2px solid transparent",
+            padding: "8px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer", marginBottom: -2,
+            color: tab === t ? T.ink : T.faint, borderBottom: tab === t ? `3px solid ${T.accent}` : "3px solid transparent",
           }}>{t}</div>
         ))}
       </div>
@@ -72,7 +73,7 @@ export default function CommercialPage({ proj, notify, reload }) {
             </div>
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
               <Pill status="Signed" />
-              <Btn small variant="ghost" icon={Download} onClick={() => notify("Downloading MSA")}>Download</Btn>
+              <Btn small variant="ghost" icon={Download} onClick={() => { downloadText(`${proj.code}-MSA.txt`, `MASTER SERVICES AGREEMENT\n${proj.code} · ${proj.name}\nSigned ${proj.kickoff}\nContract value: ${fmt(c.total)}\n\n(Reference copy generated from the customer portal.)`); notify("Downloading MSA"); }}>Download</Btn>
             </div>
           </div>
         </Card>

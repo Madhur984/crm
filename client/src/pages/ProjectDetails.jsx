@@ -25,11 +25,11 @@ export default function ProjectDetailsPage({ proj, notify }) {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 20 }}>
         <div>
-          <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${T.line}`, marginBottom: 18 }}>
+          <div style={{ display: "flex", gap: 6, borderBottom: `2px solid ${T.edge}`, marginBottom: 18, flexWrap: "wrap" }}>
             {tabs.map((t) => (
               <div key={t} onClick={() => setTab(t)} style={{
-                padding: "8px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                color: tab === t ? T.ink : T.faint, borderBottom: tab === t ? `2px solid ${T.ink}` : "2px solid transparent",
+                padding: "8px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer", marginBottom: -2,
+                color: tab === t ? T.ink : T.faint, borderBottom: tab === t ? `3px solid ${T.accent}` : "3px solid transparent",
               }}>{t}</div>
             ))}
           </div>

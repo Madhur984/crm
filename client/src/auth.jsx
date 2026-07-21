@@ -38,8 +38,12 @@ export function AuthProvider({ children }) {
     setOrg(null);
   };
 
+  const refreshUser = async () => {
+    try { const { user, org } = await api.me(); setUser(user); setOrg(org); } catch { /* ignore */ }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, org, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, org, loading, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

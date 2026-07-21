@@ -7,11 +7,39 @@
   <style>
     * { box-sizing: border-box; }
     html, body, #root { margin: 0; padding: 0; height: 100%; }
-    body { -webkit-font-smoothing: antialiased; }
+    body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: #F4F4EF; }
     input, select, textarea, button { font-family: inherit; }
-    ::-webkit-scrollbar { width: 9px; height: 9px; }
-    ::-webkit-scrollbar-thumb { background: #D8DBE0; border-radius: 6px; }
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-thumb { background: #C4C4BA; border-radius: 5px; border: 3px solid #F4F4EF; }
+    ::-webkit-scrollbar-thumb:hover { background: #A7A79C; }
     ::-webkit-scrollbar-track { background: transparent; }
+
+    /* Soft-brutalist interaction — small hard shadows, gentle press */
+    .rc-btn { transition: transform .08s ease, box-shadow .08s ease, background .12s ease, color .12s ease; }
+    .rc-btn-primary, .rc-btn-secondary, .rc-btn-subtle, .rc-btn-dark { box-shadow: 2px 2px 0 #2B3340; }
+    .rc-btn-primary:hover, .rc-btn-secondary:hover, .rc-btn-subtle:hover, .rc-btn-dark:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #2B3340; }
+    .rc-btn-primary:active, .rc-btn-secondary:active, .rc-btn-subtle:active, .rc-btn-dark:active { transform: translate(2px,2px); box-shadow: 0 0 0 #2B3340; }
+    .rc-btn-primary:hover { background: #16A34A; }
+    .rc-btn-secondary:hover { background: #F4F4EF; }
+    .rc-btn-subtle:hover { background: #BBF7D0; }
+    .rc-btn-dark:hover { background: #000000; }
+    .rc-btn-ghost { box-shadow: none; }
+    .rc-btn-ghost:hover { background: #EEEEE7; }
+
+    .rc-card { transition: transform .12s ease, box-shadow .12s ease; }
+    .rc-card-hover:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #2B3340 !important; }
+
+    .rc-nav { transition: transform .1s ease, box-shadow .1s ease, background .12s ease, color .12s ease; }
+    .rc-nav:hover { background: #EEEEE7; }
+    .rc-row { transition: background .12s ease; }
+    .rc-row:hover { background: #F6F6EF; }
+    .rc-tab { transition: color .13s ease, border-color .13s ease; }
+    .rc-link { transition: opacity .12s ease; }
+    .rc-link:hover { opacity: .72; }
+
+    /* Emerald focus with a soft offset shadow */
+    input:focus, select:focus, textarea:focus { border-color: #16A34A !important; box-shadow: 2px 2px 0 rgba(22,163,74,.7); }
+    .rc-search:focus-within { border-color: #16A34A !important; box-shadow: 2px 2px 0 rgba(22,163,74,.7); }
   </style>
 </head>
 <body>

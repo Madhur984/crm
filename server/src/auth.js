@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import express from "express";
-import { prisma } from "./prisma.js";
+import { db } from "./repo/index.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
@@ -17,7 +17,7 @@ export async function requireAuth(req, res, next) {
     const token = header.startsWith("Bearer ") ? header.slice(7) : null;
     if (!token) return res.status(401).json({ error: "Not authenticated" });
     const payload = jwt.verify(token, JWT_SECRET);
-    const user = await prisma.user.findUnique({ where: { id: payload.sub }, include: { org: true } });
+    const user = await db.getUserById(payload.sub);
     if (!user) return res.status(401).json({ error: "Invalid session" });
     req.user = user;
     next();
@@ -31,18 +31,17 @@ export const authRouter = express.Router();
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
-  const user = await prisma.user.findUnique({ where: { email: String(email).toLowerCase().trim() } });
+  const user = await db.getUserByEmail(String(email).toLowerCase().trim());
   if (!user) return res.status(401).json({ error: "Incorrect email or password" });
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return res.status(401).json({ error: "Incorrect email or password" });
-  const token = signToken(user);
-  res.json({ token, user: publicUser(user) });
+  res.json({ token: signToken(user), user: publicUser(user) });
 });
 
 authRouter.get("/me", requireAuth, async (req, res) => {
-  res.json({ user: publicUser(req.user), org: { id: req.user.org.id, name: req.user.org.name } });
+  res.json({ user: publicUser(req.user), org: req.user.org || null });
 });
 
 export function publicUser(u) {
-  return { id: u.id, email: u.email, name: u.name, role: u.role, orgId: u.orgId };
+  return { id: u.id, email: u.email, name: u.name, role: u.role, phone: u.phone || null, orgId: u.orgId };
 }

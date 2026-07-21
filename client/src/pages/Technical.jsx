@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { api } from "../api.js";
-import { T, MONO } from "../theme.js";
+import { T, MONO, BORDER } from "../theme.js";
 import { Card, Pill, Btn, Table, PageHeader } from "../components/ui.jsx";
 import { Plus, Search, Send, Download } from "../icons.jsx";
+
+const tabBar = { display: "flex", gap: 6, borderBottom: `2px solid ${T.edge}`, marginBottom: 18, flexWrap: "wrap" };
+const tabStyle = (active) => ({
+  padding: "8px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer", marginBottom: -2,
+  color: active ? T.ink : T.faint, borderBottom: active ? `3px solid ${T.accent}` : "3px solid transparent",
+});
 
 export default function TechnicalPage({ proj, notify, reload }) {
   const [tab, setTab] = useState("BOM");
@@ -34,21 +40,18 @@ export default function TechnicalPage({ proj, notify, reload }) {
     <>
       <PageHeader eyebrow={`${proj.code} · Baseline confirmed`} title="Technical Requirements"
         action={<Btn variant="secondary" icon={Plus} onClick={requestChange}>Request a change</Btn>} />
-      <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${T.line}`, marginBottom: 18 }}>
+      <div style={tabBar}>
         {tabs.map((t) => (
-          <div key={t} onClick={() => setTab(t)} style={{
-            padding: "8px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-            color: tab === t ? T.ink : T.faint, borderBottom: tab === t ? `2px solid ${T.ink}` : "2px solid transparent",
-          }}>{t}</div>
+          <div key={t} onClick={() => setTab(t)} style={tabStyle(tab === t)}>{t}</div>
         ))}
       </div>
 
       {tab === "BOM" && (
         <Card title="Bill of Materials" action={
-          <div style={{ display: "flex", alignItems: "center", gap: 8, background: T.mist, border: `1px solid ${T.line}`, borderRadius: 7, padding: "5px 10px" }}>
-            <Search size={13} color={T.faint} />
+          <div className="rc-search" style={{ display: "flex", alignItems: "center", gap: 8, background: T.panel, border: BORDER, borderRadius: 5, padding: "5px 10px" }}>
+            <Search size={13} color={T.ink} />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search part number or description"
-              style={{ border: "none", background: "transparent", outline: "none", fontSize: 12.5, width: 210 }} />
+              style={{ border: "none", background: "transparent", outline: "none", fontSize: 12.5, width: 210, fontWeight: 500 }} />
           </div>
         }>
           <Table columns={["id", "part", "desc", "qty", "alt", "status"]} rows={filtered}
@@ -103,7 +106,7 @@ export default function TechnicalPage({ proj, notify, reload }) {
                 <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
                   <input value={replyText[c.dbId] || ""} onChange={(e) => setReplyText((r) => ({ ...r, [c.dbId]: e.target.value }))}
                     onKeyDown={(e) => e.key === "Enter" && sendReply(c)} placeholder="Type a reply..."
-                    style={{ flex: 1, border: `1px solid ${T.line}`, borderRadius: 6, padding: "7px 10px", fontSize: 13, outline: "none" }} />
+                    style={{ flex: 1, border: BORDER, borderRadius: 5, padding: "7px 10px", fontSize: 13, outline: "none", fontWeight: 500 }} />
                   <Btn small icon={Send} disabled={sending} onClick={() => sendReply(c)}>Send</Btn>
                 </div>
               )}

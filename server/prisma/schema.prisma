@@ -8,7 +8,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -20,16 +20,19 @@ model Organization {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  role         String // "Procurement Lead", "Quality Approver", etc.
-  orgId        String
-  org          Organization @relation(fields: [orgId], references: [id])
-  tickets      Ticket[]
-  messages     Message[]
-  createdAt    DateTime @default(now())
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  role          String // "Procurement Lead", "Quality Approver", etc.
+  phone         String?
+  orgId         String
+  org           Organization @relation(fields: [orgId], references: [id])
+  tickets       Ticket[]
+  messages      Message[]
+  notifications Notification[]
+  meetings      Meeting[]
+  createdAt     DateTime @default(now())
 }
 
 model Project {
@@ -73,6 +76,8 @@ model Project {
   activities     Activity[]
   tickets        Ticket[]
   messages       Message[]
+  notifications  Notification[]
+  meetings       Meeting[]
 
   updatedAt DateTime @default(now()) @updatedAt
 }
@@ -169,4 +174,32 @@ model Message {
   createdAt DateTime @default(now())
   project   Project @relation(fields: [projectId], references: [id])
   user      User    @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  projectId String?
+  cat       String // Technical | Compliance | Commercial | Logistics | General
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  project   Project? @relation(fields: [projectId], references: [id])
+}
+
+model Meeting {
+  id        Int      @id @default(autoincrement())
+  code      String
+  userId    String
+  projectId String
+  topic     String
+  mode      String // "Video call" | "Phone call" | "In person"
+  date      String
+  time      String
+  status    String   @default("Requested")
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id])
 }

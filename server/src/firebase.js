@@ -1,9 +1,9 @@
 import admin from 'firebase-admin';
 import path from 'path';
 import fs from 'fs';
-import fileDirName from 'file-dirname';
+import { fileURLToPath } from 'url';
 
-const [, __dirname] = fileDirName();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let db = null;
 

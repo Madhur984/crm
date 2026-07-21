@@ -51,4 +51,19 @@ export const api = {
 
   messages: (params) => request("/messages?" + new URLSearchParams(params).toString()),
   sendMessage: (body) => request("/messages", { method: "POST", body: JSON.stringify(body) }),
+
+  search: (q) => request("/search?q=" + encodeURIComponent(q || "")),
+
+  notifications: () => request("/notifications"),
+  markNotificationRead: (id) => request(`/notifications/${id}/read`, { method: "POST" }),
+  markAllNotificationsRead: () => request("/notifications/read-all", { method: "POST" }),
+
+  meetings: () => request("/meetings"),
+  createMeeting: (body) => request("/meetings", { method: "POST", body: JSON.stringify(body) }),
+
+  updateProfile: (body) => request("/profile", { method: "PATCH", body: JSON.stringify(body) }),
+  changePassword: (body) => request("/profile/password", { method: "POST", body: JSON.stringify(body) }),
+
+  uploadDocument: (projectId, body) => request(`/projects/${projectId}/documents`, { method: "POST", body: JSON.stringify(body) }),
+  approve: (projectId, body) => request(`/projects/${projectId}/approve`, { method: "POST", body: JSON.stringify(body) }),
 };
