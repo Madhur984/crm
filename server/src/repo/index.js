@@ -7,7 +7,10 @@ const driver = (process.env.DB_DRIVER || "sqlite").toLowerCase();
 
 let db = sqliteRepo;
 if (driver === "firestore") {
-  const { firestoreRepo } = await import("./firestore.js");
+  // Indirect specifier so bundlers (Vercel @vercel/nft) don't statically trace
+  // firestore.js — and its heavy firebase-admin dep — into the SQL/Postgres build.
+  const mod = "./firestore.js";
+  const { firestoreRepo } = await import(mod);
   db = firestoreRepo;
 }
 

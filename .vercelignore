@@ -1,0 +1,7 @@
+# Local-only artifacts — keep the deployment upload lean.
+**/node_modules
+client/dist
+server/**/*.db
+server/**/*.db-*
+server/.env
+.env
