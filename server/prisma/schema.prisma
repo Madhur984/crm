@@ -1,0 +1,172 @@
+// Recon Core — customer portal data model
+// SQLite via Prisma. Nested read-only display data is stored as JSON strings;
+// records the customer can mutate (invoices, clarifications, tickets, messages)
+// are first-class tables.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id       String    @id @default(cuid())
+  name     String
+  users    User[]
+  projects Project[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String // "Procurement Lead", "Quality Approver", etc.
+  orgId        String
+  org          Organization @relation(fields: [orgId], references: [id])
+  tickets      Ticket[]
+  messages     Message[]
+  createdAt    DateTime @default(now())
+}
+
+model Project {
+  id                String  @id
+  code              String  @unique
+  name              String
+  industry          String
+  application       String
+  quantity          String
+  value             String
+  currency          String
+  location          String
+  kickoff           String
+  targetDelivery    String
+  status            String
+  risk              String
+  riskReason        String
+  completion        Int
+  currentStageIndex Int
+  confidence        Int
+  confidenceLabel   String
+
+  // JSON string columns (read-only display data)
+  categories     String // string[]
+  stageDates     String // [{status,date,team}]
+  contacts       String // [{name,role}]
+  reconTeam      String // [{role,name,response}]
+  certifications String // [{name,status,certNo,issued,expiry}]
+  complianceDocs String // [{name,status,version,updated}]
+  customs        String // {importReview,exportReview,hs:[...]}
+  commercial     String // {total,invoiced,paid,quote:{...},pos:[...],schedule:[...],quoteAccepted}
+  logistics      String // {steps,manufacturing,carrier,...,insurance,delay}
+
+  orgId String
+  org   Organization @relation(fields: [orgId], references: [id])
+
+  bom            BomLine[]
+  clarifications Clarification[]
+  invoices       Invoice[]
+  documents      Document[]
+  activities     Activity[]
+  tickets        Ticket[]
+  messages       Message[]
+
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model BomLine {
+  id        Int    @id @default(autoincrement())
+  projectId String
+  lineId    String // "L-001"
+  part      String
+  desc      String
+  qty       String
+  alt       String
+  status    String
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Clarification {
+  id        Int    @id @default(autoincrement())
+  projectId String
+  code      String // "C-104"
+  subject   String
+  status    String
+  project   Project @relation(fields: [projectId], references: [id])
+  messages  ClarificationMessage[]
+}
+
+model ClarificationMessage {
+  id              Int    @id @default(autoincrement())
+  clarificationId Int
+  from            String
+  date            String
+  text            String
+  createdAt       DateTime @default(now())
+  clarification   Clarification @relation(fields: [clarificationId], references: [id])
+}
+
+model Invoice {
+  id        Int    @id @default(autoincrement())
+  projectId String
+  code      String // "INV-8821"
+  date      String
+  amount    String
+  status    String
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Document {
+  id        Int    @id @default(autoincrement())
+  projectId String
+  name      String
+  type      String
+  version   String
+  date      String
+  by        String
+  status    String
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Activity {
+  id        Int    @id @default(autoincrement())
+  projectId String
+  cat       String
+  owner     String
+  time      String
+  head      String
+  notes     String
+  attach    String // JSON string[]
+  order     Int    @default(0)
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Ticket {
+  id          Int    @id @default(autoincrement())
+  code        String // "T-1001"
+  projectId   String
+  userId      String
+  category    String
+  priority    String
+  description String
+  status      String @default("Open")
+  createdAt   DateTime @default(now())
+  project     Project @relation(fields: [projectId], references: [id])
+  user        User    @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id        Int    @id @default(autoincrement())
+  projectId String
+  userId    String
+  channel   String // "support" | "activity"
+  refId     String? // e.g. activity id when replying to an update
+  sender    String // "You" | "Recon"
+  text      String
+  createdAt DateTime @default(now())
+  project   Project @relation(fields: [projectId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+}

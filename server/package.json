@@ -1,0 +1,29 @@
+{
+  "name": "recon-core-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Recon Core customer portal — backend API",
+  "scripts": {
+    "dev": "node --env-file=.env src/index.js",
+    "start": "node --env-file=.env src/index.js",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:seed": "node --env-file=.env prisma/seed.js",
+    "db:reset": "prisma db push --force-reset && node --env-file=.env prisma/seed.js",
+    "setup": "prisma generate && prisma db push --force-reset && node --env-file=.env prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}
